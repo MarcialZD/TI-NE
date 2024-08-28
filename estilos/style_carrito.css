@@ -1,0 +1,44 @@
+body {
+
+    min-height: 100vh;
+    background-image:  url('https://pa1.aminoapps.com/6658/0166c1ef8c6e79e2aaa4ea67c022fae092ac3c40_00.gif');
+ background-size: cover; 
+    background-repeat: no-repeat; 
+}
+
+
+h2 {
+    font-weight: bold;
+
+    text-align: center;
+    color: #333;
+    margin-top: 70px;
+}
+
+
+
+
+h3 {
+    margin-left: 55px;
+    color: black;
+    margin-top: 20px;
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border:  0;
+    padding: 0px;
+}
+
+th {
+    text-align: left;
+    font-weight: bold;
+}
+
+th, td {
+    text-align: center;
+}

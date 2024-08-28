@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #2eb44b, #c1c1c1);
+
+    padding: 0;
+}
+body {
+
+    min-height: 100vh;
+    background-image:  url('https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNjc3eGlreHFiYmc1OTJnNzNlcm5tdHFpdTRtajd0ZDFpYXEwZ2RhbyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/vCJrwYGBQlbdS/giphy.gif');
+ background-size: cover; 
+    background-repeat: no-repeat; 
+}
+
+
+.container {
+    background-color: #fff;
+    max-width: 400px;
+
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 60px;
+    
+
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-top: 40px;
+}
+
+form {
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+}
+
+
+input[type="text"] {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: greenyellow;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+
+p {
+    text-align: center;
+    font-weight: bold;
+    color: black;
+    margin-top: 20px;
+}

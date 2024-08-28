@@ -1,0 +1,88 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+
+
+}
+
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(to right, #2eb44b, #c1c1c1);
+
+  
+
+}
+body {
+
+    min-height: 100vh;
+    background-image:  url('https://i.gifer.com/HBGr.gif');
+ background-size: cover; 
+    background-repeat: no-repeat; 
+
+    text-align: center;}
+#div_logo_empresa{
+    position: fixed;
+    width: 100px;
+    top: 2px;
+    right: 100px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    text-align: center;
+    padding: 20px 25px;
+    box-shadow: 0px 5px 10px rgba(42, 174, 75, 0.7);
+
+}
+
+form .title {
+    color: #252525;
+    font-size: 35px;
+    font-weight: 800;
+    margin-bottom: 30px;
+}
+
+form label {
+    margin-bottom: 35px;
+}
+
+form label .fa-solid {
+    font-size: 20px;
+    color: rgb(81, 150, 94);
+    margin-right: 10px;
+}
+
+form label input {
+    outline: none;
+    border: none;
+    color: #252525;
+    border-bottom: solid 1px rgb(85, 205, 135);
+    padding: 0 5px;
+    font-size: 20px;
+}
+form label input::placeholder{
+    color: rgba(37, 37, 37, 0.5);
+}
+form .link{
+    color:rgba(37, 37, 37, 0.5);
+    margin-bottom: 15px;
+    font-size: 17px;
+
+}
+
+form #enviar{
+    color: #fff;
+    border: none;
+    background: linear-gradient(to right,#24b63e,#46dd8f);
+    padding: 10px,15px;
+    cursor: pointer;
+    font-size: 20px;
+
+}
