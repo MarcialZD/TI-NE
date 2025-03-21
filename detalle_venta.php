@@ -196,7 +196,7 @@ if ($resultado) {
                         <td><?php echo htmlspecialchars($articulo['nombre']); ?></td>
                         <td>$<?php echo number_format($articulo['precio'], 2); ?></td>
                         <td><?php echo $articulo['cantidad']; ?></td>
-                        <td>$<?php echo number_format($articulo['subtotal'], 2); ?></td>
+                        <td>$<?php echo number_format($articulo['precio']*$articulo['cantidad'], 2); ?></td>
                         <td><?php echo ($articulo['mensaje']); ?></td>
 
                     </tr>
