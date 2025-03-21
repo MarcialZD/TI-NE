@@ -55,7 +55,6 @@ if (curl_errno($ch)) {
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 curl_close($ch);
 
-// Imprimir la respuesta y el código de estado HTTP para depuración
 echo "HTTP Code: $httpCode<br>";
 echo "Response: <pre>$response</pre>";
 
@@ -68,7 +67,6 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     die("JSON Decode Error: " . json_last_error_msg());
 }
 
-// Redirigir al usuario a PayPal para completar el pago
 if (isset($payment->links)) {
     foreach ($payment->links as $link) {
         if ($link->rel == 'approval_url') {

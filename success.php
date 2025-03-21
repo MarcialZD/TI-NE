@@ -94,6 +94,7 @@ try {
 
 // Cerrar la conexión
 $conexion ->close();
+session_unset();
 
 // Mostrar alerta y redirigir
 echo "<script>

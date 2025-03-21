@@ -317,7 +317,7 @@ $conexion->close(); // Cerrar la conexión a la base de datos
                 </div>
                 <div class="form-group">
                     <label for="mensaje">Mensaje en la torta</label>
-                    <input type="text" name="mensaje" id="mensaje" class="form-control" placeholder="Escribe tu mensaje" required>
+                    <input type="text" name="mensaje" id="mensaje" class="form-control" placeholder="Escribe tu mensaje" >
                 </div>
 
                 <button type="submit" class="btn">Agregar al Carrito</button>
@@ -338,7 +338,7 @@ $conexion->close(); // Cerrar la conexión a la base de datos
                 <h5>Redes Sociales</h5>
                 <p><a href="https://www.facebook.com/profile.php?id=100063723304943" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a></p>
                 <p><a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a></p>
-                <p><a href="https://tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p> <!-- Añadido TikTok -->
+                <p><a href="https://tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p> 
             </div>
             <div class="col-md-4 mb-3">
                 <h5>Información</h5>

@@ -113,7 +113,6 @@
             $es_admin = $_POST["txtEsAdmin"];
             $telefono = $_POST["txtTelefono"];
 
-            // Actualizar datos del usuario
             $stmt = $conexion->prepare("UPDATE usuarios SET
                 apellidos=?, 
                 nombres=?, 

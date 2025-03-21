@@ -2,7 +2,6 @@
 <?php
 session_start();
 
-// Contador de visitas
 $file = 'contador.txt';
 
 if (!file_exists($file)) {
@@ -14,7 +13,6 @@ if (!file_exists($file)) {
 $visitas++;
 file_put_contents($file, $visitas);
 
-// Si el usuario está logueado, obtenemos el carrito
 $cant_total_productos = 0;
 if (isset($_SESSION["username"])) {
     include 'db_connect.php';
@@ -96,7 +94,6 @@ if (isset($_SESSION["username"])) {
 
         }
 
-        /* Estilo para la ventana flotante del chatbot */
         .chat-container {
             width: 300px;
             height: 400px;

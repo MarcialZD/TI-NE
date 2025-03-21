@@ -2,7 +2,6 @@
 require 'db_connect.php';
 
 
-// Obtener todos los artículos de la tabla 'articulos'
 $articulos_sql = "
     SELECT 
         id,
@@ -258,7 +257,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 echo "<h5 class='card-title'>{$articulo['nombre']}</h5>";
                 echo "<p class='card-text'>Stock: {$articulo['stock']} unidades</p>";
 
-                // Mostrar el precio y el descuento si aplica
                 if ($articulo['descuento'] > 0) {
                     echo "<p class='card-text'>Precio original: <del>{$articulo['precio']} USD</del></p>";
                     echo "<p class='card-text'>Descuento: {$articulo['descuento']}%</p>";
@@ -267,15 +265,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     echo "<p class='card-text'>Precio: $ {$articulo['precio']} </p>";
                 }
 
-                // Formulario para agregar al carrito
                 echo "<form action='agregararticulo.php' method='post'>";
                 echo "<input type='hidden' name='articulo_id' value='{$articulo['id']}'>";
                 echo "<div class='mb-3'>";
-                echo "<label for='cantidad{$articulo['id']}' class='form-label'>Cantidad:</label>";
-                echo "<input type='number' name='cantidad' id='cantidad{$articulo['id']}' value='1' min='1' class='form-control' required autocomplete='off'>";
                 echo "</div>";
-                // Botón para ver el producto
-                echo "<button type='submit' class='btn'>Agregar al Carrito</button> <br>";
                 echo "<a href='vistaProducto.php?id={$articulo['id']}' class='btn mt-2'>Ver Producto</a>";
                 echo "</form>";
 
@@ -296,7 +289,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         serviceCards.forEach((card, index) => {
             setTimeout(() => {
                 card.classList.add('visible');
-            }, index * 200); // Ajusta el tiempo según sea necesario
+            }, index * 200); 
         });
     });
 </script>

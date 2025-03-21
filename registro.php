@@ -1,7 +1,6 @@
 <?php
 //editado
 if (isset($_POST["Registrar"])) {
-    // Incluir la conexión a la base de datos
     include 'db_connect.php';
 
     $nombres = $_POST["nombres"];
@@ -12,7 +11,6 @@ if (isset($_POST["Registrar"])) {
     $telefono = $_POST["telefono"];
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-    // Verificar si las contraseñas coinciden
     $confirmar_password = $_POST["confirmar_password"];
     if ($_POST["password"] != $confirmar_password) {
         $destino = "login.php?registro.php";
@@ -20,7 +18,6 @@ if (isset($_POST["Registrar"])) {
         exit();
     }
 
-    // Insertar el nuevo usuario en la tabla
     $sql = "INSERT INTO usuarios (nombres, apellidos, fecha_nacimiento, username, correo, password, telefono) 
             VALUES ('$nombres', '$apellidos', '$fecha_nacimiento', '$username', '$correo', '$password','$telefono')";
 
@@ -45,7 +42,6 @@ if (isset($_POST["Registrar"])) {
     <title>Inicio</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="estilos/Stylle_registro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
 
@@ -94,7 +90,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 </script>
 <style>
-     nav {
+        body {
+            
+            text-align: center;
+        }
+
+        nav {
             background-color: #faeae5;
             text-align: center;
         }
@@ -107,151 +108,122 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             background-color: #faeae5
         }
 
-        /* CSS */
-        .custom-toggler {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='black' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-        }
-        .chat-container {
-            width: 300px;
-            height: 400px;
-            position: fixed;
-            bottom: 120px;
-            right: 15px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-            display: none;
-            /* Oculta el chat al principio */
-            flex-direction: column;
-        }
 
-        .chat-header {
-            background-color: #e881a2;
-            color: white;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-        }
+        form {
+    display: flex;
+    flex-direction: column;
+    background-color: #faeae5;
+    padding: 20px 5%; 
+    box-shadow: 0px 5px 10px rgba(255, 255, 255, 0.7);
+    width: 30%; 
+    margin-left: 35%;
+    margin-top: 1%;
+  
+}
 
-        .chat-header h3 {
-            margin: 0;
-            font-size: 16px;
-        }
+form .title {
+    color: #020202;
+    font-size: 2rem; 
+    font-weight: 800;
+    margin-bottom: 30px;
+    margin-top: 1%;
+}
 
-        .chat-header button {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-        }
+form label {
+    display: flex; 
+    align-items: center; 
+    margin-bottom: 25px; 
+}
 
-        .chat-box {
-            flex-grow: 1;
-            padding: 10px;
-            overflow-y: auto;
-            border-bottom: 1px solid #ddd;
-            background-color: #f9f9f9;
-        }
+form label .fa-solid {
+    font-size: 1.5rem; 
+    color: rgb(7, 7, 7);
+    margin-right: 10px; 
+}
 
-        .chat-input {
-            display: flex;
-            padding: 10px;
-        }
+form label input {
+    outline: none;
+    border: none;
+    color: #070707;
+    border-bottom: solid 1px rgb(255, 255, 255);
+    padding: 5px; 
+    font-size: 1.2rem; 
+    flex: 1; 
+}
 
-        #user-input {
-            flex-grow: 1;
-            padding: 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin-right: 5px;
-        }
+form label input::placeholder {
+    color: rgba(37, 37, 37, 0.5);
+}
 
-        button {
-            background-color: #e881a2;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 5px ;
-            border-radius: 5px;
+form .link {
+    color: rgba(37, 37, 37, 0.5);
+    margin-bottom: 15px;
+    font-size: 1rem; 
+}
+
+form #enviar {
+    border: none;
+    padding: 10px 15px; 
+    cursor: pointer;
+    font-size: 1.2rem;
+    background-color: #e881a2;
+    color: #faeae5;
+}
+footer {
+            background-color: #faeae5;
+            margin-top: 4%;
+            color: #e8306d;
+            padding: 20px 0;
         }
 
+        footer a {
+            color: #e8306d;
 
 
-        .bot-text,
-        .user-text {
-            margin: 10px 0;
+            text-decoration: none;
         }
 
-        .bot-text {
-            color: #03a9f4
+        footer img {
+            width: 30px;
+            height: 30px;
         }
-
-        .user-text {
-            color: blue;
-            text-align: right;
-        }
-
-        /* Icono del chatbot que aparece en la esquina */
-        .chat-icon {
-            position: fixed;
-            bottom: 140px;
-            right: 35px;
-            background-color: #e881a2;
-            color: white;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-        }
-
-
-</style>
+    </style>
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg fixed-top shadow-lg">
+<nav class="navbar navbar-expand-lg navbar-light navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="index.php">
-                <img src="img/NutriCode_logo_sin_fondo.png" width="100" height="90" alt="">
+                <img src="img/NutriCode_logo_sin_fondo.png" width="100" height="90" alt="Logo">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon custom-toggler"></span>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.php" style="color: #000000;">
-                            Inicio
-                        </a>
+                        <a class="nav-link" href="blog.php" style="color: #f10f5a;">Blog</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="servicios.php" style="color: #000000;">Servicio</a>
+                        <a class="nav-link" href="servicios.php" style="color: #f10f5a">Servicios</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="quienesSomos.php" style="color: #000000;">¿Quienes somos?</a>
+                        <a class="nav-link" href="productos.php" style="color: #f10f5a">Pasteles</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="productos.php" style="color: #000000;"></i>Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="carrito.php" style="color: #000000;"><i class="fa-solid fa-user"></i>Cuenta</a>
-                    </li>
+                    <?php
+                    if (!isset($_SESSION["username"])) {
+                        echo '<li class="nav-item"><a class="nav-link" href="carrito.php" style="color: #f10f5a"><i class="fa-solid fa-user active"></i> Cuenta</a></li>';
+                    } else {
+                        echo '<li class="nav-item"><a class="nav-link" href="carrito.php" style="color: #f10f5a;">' . $_SESSION["username"] . ' <i class="fa-solid fa-cart-shopping"></i>(' . $cant_total_productos . ')</a></li>';
+                    }
+                    ?>
+                   
                 </ul>
             </div>
         </div>
     </nav>
-    <form action="registro.php" method="post" style="margin-top: 10%;">
+
+    <form action="registro.php" method="post">
         <h1 class="title" style="color:#1a9bb8">Regístrate!</h1>
         <label for="nombres">
             <input placeholder="Nombres" type="text" name="nombres" id="nombres" autocomplete="off" required>
@@ -283,94 +255,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </form>
 
 </body>
-<footer style="background-color: #1a9bb8; color: #ffffff; text-align: center; ">
-                <div class="container-">
-                    <div class="row justify-content-center">
-                        <div class="col-md-6">
-                            <h4 style="color: #ffffff;">Contacto</h4>
-                            <p style="color: #ffffff;">Correo electrónico: dargel@gmail.com</p>
-                            <p style="color: #ffffff;">Teléfono: +51 984-153-862</p>
 
-                            <p style="color: #ffffff;">&copy Derechos reservados Dargel</p>
-                            <p>
-                            <p>
-                                <a href="https://www.facebook.com/profile.php?id=100063723304943" target="_blank" style="color: #ffffff;">
-                                   
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" style="width: 30px; height: 30px;" />  Dargel Repostería
-                                </a>
-                            </p>
-
-                            </p>
-                        </div>
-                    </div>
+<footer class="py-4">
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-md-4 mb-3">
+                    <h5>Contacto</h5>
+                    <p><i class="fa-solid fa-envelope"></i> Correo: <a href="mailto:dargel@dargelreposteria.com">dargel@dargelreposteria.com</a></p>
                 </div>
-            </footer>
-<script src="//code.tidio.co/aookr9g7m2owen4eytsaebmypimtsi9k.js" async></script>
-
-<div class="chat-icon" id="chat-icon" onclick="toggleChat()">
-        💬
-    </div>
-
-    <div class="chat-container" id="chat-container">
-        <div class="chat-header">
-            <h3>Chat Dargel</h3>
-            <button onclick="toggleChat()">✖</button>
+                <div class="col-md-4 mb-3">
+                    <h5>Redes Sociales</h5>
+                    <p><a href="https://www.facebook.com/profile.php?id=100063723304943" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a></p>
+                    <p><a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a></p>
+                    <p><a href="https://tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p> <!-- Añadido TikTok -->
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Información</h5>
+                    <p>Somos una empresa dedicada a ofrecer los mejores pasteles personalizados para cada ocasión.</p>
+                </div>
+            </div>
         </div>
-        <div class="chat-box" id="chat-box">
-            <p class="bot-text">¡Hola! Soy el chatbot de Dargel, ¿en qué puedo ayudarte?</p>
+        <div class="text-center">
+            <p>&copy; 2024 Reposteria Dargel</p>
         </div>
-        <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Escribe tu pregunta aquí..." />
-            <button onclick="sendMessage()">Enviar</button>
-        </div>
-    </div>
-<script>
-                    function toggleChat() {
-                        const chatContainer = document.getElementById('chat-container');
-                        const chatIcon = document.getElementById('chat-icon');
+    </footer>
 
-                        if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
-                            chatContainer.style.display = 'flex';
-                            chatIcon.style.display = 'none'; // Oculta el ícono cuando el chat está abierto
-                        } else {
-                            chatContainer.style.display = 'none';
-                            chatIcon.style.display = 'flex'; // Muestra el ícono cuando el chat está cerrado
-                        }
-                    }
-
-                    function sendMessage() {
-                        const userInput = document.getElementById("user-input").value;
-                        const chatBox = document.getElementById("chat-box");
-
-                        // Muestra el mensaje del usuario
-                        const userMessage = document.createElement("p");
-                        userMessage.classList.add("user-text");
-                        userMessage.textContent = userInput;
-                        chatBox.appendChild(userMessage);
-
-                        // Limpiar el campo de entrada
-                        document.getElementById("user-input").value = '';
-
-                        // Respuestas automáticas del chatbot
-                        const botResponse = document.createElement("p");
-                        botResponse.classList.add("bot-text");
-
-                        if (userInput.toLowerCase().includes("productos") || userInput.toLowerCase().includes("venden") || userInput.toLowerCase().includes("que")) {
-                            botResponse.textContent = "Ofrecemos pasteles con diferentes temáticas y sabores!";
-                        } else if (userInput.toLowerCase().includes("horario") || userInput.toLowerCase().includes("atienden") || userInput.toLowerCase().includes("cuando")) {
-                            botResponse.textContent = "Nuestro horario es de lunes a viernes de 9 a.m. a 6 p.m.";
-                        } else if (userInput.toLowerCase().includes("ubicación") || userInput.toLowerCase().includes("ubican") || userInput.toLowerCase().includes("donde")) {
-                            botResponse.textContent = "Nos ubicamos en Av. Las Palmers, Los olivos Lima Perú";
-                        }else if (userInput.toLowerCase().includes("precios") ) {
-                                botResponse.textContent = "Nuestros precios varian según el pedido.";
-                        }else if (userInput.toLowerCase().includes("envio") || userInput.toLowerCase().includes("entrega") || userInput.toLowerCase().includes("donde")) {
-                                    botResponse.textContent = "La entrega del pedido demoran un minimo de 3 dias y según el pedido";
-                        } else {
-                            botResponse.textContent = "Lo siento, no entiendo tu pregunta. Puedes usar el chat en vivo";
-                        }
-
-                        chatBox.appendChild(botResponse);
-                        chatBox.scrollTop = chatBox.scrollHeight; // Scroll al final del chat
-                    }
-                </script>
 </html>

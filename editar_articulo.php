@@ -52,7 +52,6 @@
 
     $id = $_GET["id"];
 
-    // Obtener datos del artículo
     $stmt = $conexion->prepare("SELECT * FROM articulos WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -132,7 +131,6 @@
             $stock = intval($_POST["txtStock"]);
             $descripcion = $_POST["txtDescripcion"]; 
 
-            // Actualizar datos del artículo
             $stmt = $conexion->prepare("UPDATE articulos SET
                 nombre=?, 
                 precio=?,

@@ -11,7 +11,6 @@ function getAccessToken($clientId, $clientSecret, $apiUrl) {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     curl_close($ch);
 
-    // Imprimir el código de estado HTTP y la respuesta para depuración
     echo "HTTP Code: $httpCode<br>";
     echo "Response: <pre>$response</pre>";
 

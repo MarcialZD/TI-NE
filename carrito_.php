@@ -1,15 +1,19 @@
 <?php
 session_start();
 
+// Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION["username"])) {
     header("location: login.php");
     exit();
 }
 
 require 'db_connect.php';
+$total_final = isset($_SESSION['total_final']) ? $_SESSION['total_final'] : 0;
 
+// Obtener el ID del usuario actual
 $usuario_id = $_SESSION["user_id"];
 
+// Consulta para obtener los artículos en el carrito del usuario
 $carrito_sql = "
     SELECT 
         c.id,
@@ -33,6 +37,7 @@ $stmt->bind_param("i", $usuario_id);
 $stmt->execute();
 $carrito_resultado = $stmt->get_result();
 
+// Consulta para contar artículos y obtener cantidad total
 $consulta = "
     SELECT COUNT(*) AS total_productos, SUM(cantidad) AS cantidad_total
     FROM carritos
@@ -49,6 +54,7 @@ if ($resultado) {
     $cant_total_productos = $fila['cantidad_total'] ?? 0;
 }
 
+// Lista de precios por distrito
 $district_prices = [
     'Los Olivos' => 3,
     'Comas' => 5,
@@ -84,10 +90,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['finalizar_compra'])) {
 
 $selected_district = $_SESSION['selected_district'] ?? '';
 $delivery_fee = isset($district_prices[$selected_district]) ? $district_prices[$selected_district] : 0;
-$total_final = $total_pagar + $delivery_fee;
+$total_final = isset($_SESSION['total_final']) ? $_SESSION['total_final'] : $total_pagar;
 
-$_SESSION['total_final'] = $total_final;
-
+// Consulta de ventas
 $ventas_sql = "
     SELECT 
         v.id AS id_venta, v.transaccion_id,
@@ -119,6 +124,7 @@ $ventas_resultado = $stmt->get_result();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
+        /* Estilos existentes */
         .table thead th {
             background-color: #343a40;
             color: white;
@@ -187,9 +193,6 @@ $ventas_resultado = $stmt->get_result();
         }
         .navbar-custom .navbar-nav {
             background-color: #faeae5;
-        }
-        #finalizar-compra-form {
-            display: <?php echo !empty($selected_district) ? 'block' : 'none'; ?>;
         }
     </style>
 </head>
@@ -298,9 +301,11 @@ $ventas_resultado = $stmt->get_result();
                             </div><br><br>
                             <a href="productos.php" class="btn btn-success">Añadir más productos</a>
                         </form>
-                        <form id="finalizar-compra-form" action="carrito.php" method="post">
-                            <button type="submit" name="finalizar_compra" class="btn btn-danger">Finalizar Compra</button>
-                        </form>
+                        <?php if (!empty($selected_district)): ?>
+                            <form action="carrito.php" method="post">
+                                <button type="submit" name="finalizar_compra" class="btn btn-danger">Finalizar Compra</button>
+                            </form>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -321,7 +326,6 @@ $ventas_resultado = $stmt->get_result();
                             <th>Fecha y Hora</th>
                             <th>Dirección</th>
                             <th>Estado</th>
-                            <th>Ver Detalle</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -342,6 +346,7 @@ $ventas_resultado = $stmt->get_result();
 
     <script>
     $(document).ready(function() {
+        // Actualizar distrito
         $('#district').on('change', function() {
             let selectedDistrict = $(this).val();
             let deliveryFee = $(this).find(':selected').data('price') || 0;
@@ -350,12 +355,6 @@ $ventas_resultado = $stmt->get_result();
             $('#selected_district').text(selectedDistrict);
             $('#delivery_fee').text('$' + parseFloat(deliveryFee).toFixed(2));
             $('#total_final').text('$' + parseFloat(totalPagar + deliveryFee).toFixed(2));
-
-            if (selectedDistrict) {
-                $('#finalizar-compra-form').show();
-            } else {
-                $('#finalizar-compra-form').hide();
-            }
 
             $.ajax({
                 url: 'actualizar_distrito.php',
@@ -373,44 +372,38 @@ $ventas_resultado = $stmt->get_result();
             });
         });
 
+        // Eliminar artículo
         $('.eliminar-articulo').on('click', function() {
             let carritoId = $(this).data('id');
             let row = $(this).closest('tr');
             let subtotal = parseFloat(row.find('td:nth-child(4)').text().replace(',', ''));
 
             $.ajax({
-                url: 'eliminar_articulo_carrito.php',
+                url: 'eliminar_articulo_carrito.php', 
                 method: 'POST',
                 data: { eliminar_articulo: carritoId },
                 dataType: 'json',
                 success: function(response) {
                     if (response.status === 'success') {
+                        // Eliminar la fila de la tabla
                         row.remove();
 
+                        // Actualizar el total_pagar
                         let totalPagar = parseFloat($('#total_pagar').text().replace('$', '').replace(',', '')) - subtotal;
                         $('#total_pagar').text('$' + totalPagar.toFixed(2));
 
+                        // Actualizar el total_final con el costo de entrega actual
                         let deliveryFee = parseFloat($('#delivery_fee').text().replace('$', '')) || 0;
                         $('#total_final').text('$' + (totalPagar + deliveryFee).toFixed(2));
 
+                        // Actualizar el contador de productos en el carrito
                         let currentCount = parseInt($('.fa-cart-shopping').text().match(/\d+/) || 0);
+                        $('.fa-cart-shopping').text('(' + (currentCount - 1) + ')');
 
+                        // Si no quedan artículos, mostrar mensaje de carrito vacío
                         if ($('#cart-table tbody tr').length === 0) {
                             $('#cart-table').replaceWith('<p class="lead">Tu carrito está vacío.</p>');
-                            $('#finalizar-compra-form').hide();
                         }
-
-                        $.ajax({
-                            url: 'actualizar_distrito.php',
-                            method: 'POST',
-                            data: {
-                                district: $('#selected_district').text(),
-                                total_pagar: totalPagar
-                            },
-                            success: function(response) {
-                                console.log('Total final actualizado en la sesión:', response);
-                            }
-                        });
 
                         alert('Artículo eliminado y stock actualizado');
                     } else {
