@@ -1,12 +1,6 @@
 <?php
-$services = array(
-    array("Consulta Nutricional Personalizada", "Consulta Nutricional Personalizada para alcanzar tus objetivos específicos"),
-    array("Planes de Comida Personalizados", "Planes de Comida Personalizados con el fin de contribuir a una dieta acorde a tus necesidades"),
-    array("Evaluación del Índice de Masa Corporal (IMC)", "Evaluación del Índice de Masa Corporal (IMC) para saber cuantas calorías debes consumir al día"),
-    array("Blog de Nutrición", "Blog de Nutrición para las últimas novedades"),
-    array("Clases y Talleres Virtuales", "Clases y Talleres Virtuales para la formación constante"),
-    array("Tienda Online", "Tienda Online con los mejores productos saludables")
-);
+//editado
+include 'db_connect.php';  // Incluir el archivo para la conexión a la base de datos
 
 $file = 'contador.txt';  // Ubicación del archivo donde se almacenará el conteo
 
@@ -19,160 +13,333 @@ if (!file_exists($file)) {
 $visitas++;  // Incrementa el contador
 
 file_put_contents($file, $visitas);  // Guarda el nuevo valor del contador en el archivo
+
+
+
+
+
+
+
+
+session_start();
+$cant_total_productos = 0;
+if (isset($_SESSION["username"])) {
+    include 'db_connect.php';
+
+    $usuario_id = $_SESSION["user_id"];
+
+    $consulta = "SELECT COUNT(*) AS total_productos, SUM(cantidad) AS cantidad_total
+                 FROM carritos
+                 WHERE usuario_id = $usuario_id";
+
+    $resultado = $conexion->query($consulta);
+
+    if ($resultado) {
+        $fila = $resultado->fetch_assoc();
+        $cant_total_productos = $fila['cantidad_total'] ?? 0;
+    }
+
+    $conexion->close();
+}
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
-    <title>Quienes Somos</title>
-    <!-- Tus enlaces a CSS y JavaScript -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servicios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="estilos/Style_servicios.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6BER8BQQ0Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6BER8BQQ0Z');
+</script>
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KK32PFZL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+
+  
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KK32PFZL');</script>
+<!-- End Google Tag Manager -->
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<!-- Hotjar Tracking Code for Site 5212520 (name missing) -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:5212520,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+    <style>
+      
+
+        nav {
+            background-color:#faeae5;
+            color: #03a9f4;
+        }
+     
+        footer {
+            background-color:#faeae5;
+           
+            color: #e8306d;
+            padding: 20px 0;
+        }
+
+        footer a {
+            color:#e8306d;
+            
+            
+            text-decoration: none;
+        }
+
+        footer img {
+            width: 30px;
+            height: 30px;
+        }
+
+        .card-custom {
+            display: flex;
+            width: 90%;
+            margin: 30px auto;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .card-custom img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card-custom img:hover {
+            transform: scale(1.05);
+        }
+
+        .card-body {
+            padding: 20px;
+            align-items: center;
+        }
+        .card-body p {
+            margin-top: 30px;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .responsive-img {
+            max-height: 200px;
+        }
+
+        h1.text-center {
+            font-weight: bold;
+            font-size: 3rem;
+            color: #333;
+            text-transform: uppercase;
+            padding: 20px 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            background-color: #e8306d;
+            color: #fff;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background-color: #c12c59;
+        }
+
+        .navbar-nav {
+            font-weight: 500;
+        }
+
+        /* Animaciones */
+        .card-custom {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .card-custom:hover {
+            transform: scale(1.05);
+        }
+        .card-custom {
+    display: flex;
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center;     /* Centra los elementos verticalmente */
+    flex-direction: column;  /* Coloca los elementos en columna (en caso de que haya varios elementos) */
+    height: 100%;             /* Asegura que el contenedor tenga una altura para centrar el contenido */
+}
+
+
+
+
+    </style>
+
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-lg">
-      <nav class="navbar navbar-expand-lg navbar bg-light fixed-top shadow-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="Principal.php">
-                    <img src="img/NutriCode_logo_sin_fondo.png" width="30" height="30" alt="">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="Principal.php" style="color: #000000;">
-                                Inicio
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="servicios.php" style="color: #000000;">Servicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="quienesSomos.php" style="color: #000000;">¿Quienes somos?</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="productos.php" style="color: #000000;"></i>Productos</a>
-                        </li>
-                        <?php
-                        session_start();
-
-                        if (!isset($_SESSION["username"]))
-                        {
-                            ?>  <li class="nav-item">
-                                <a class="nav-link" href="carrito.php" style="color: #000000;"><i class="fa-solid fa-user"></i>Cuenta</a>
-                            </li><?php
+    <nav class="navbar navbar-expand-lg navbar-light ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">
+                <img src="img/NutriCode_logo_sin_fondo.png" width="100" height="90" alt="Logo">
+            </a>
+            <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav" style="color: #0e9edf;">
+                <ul class="navbar-nav ms-auto" style="color: #0e9edf;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.php" style="color: #f10f5a;">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="servicios.php" style="color: #f10f5a">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.php" style="color: #f10f5a">Pasteles</a>
+                    </li>
+                    <?php
+                    if (!isset($_SESSION["username"])) {
+                        echo '<li class="nav-item"><a class="nav-link" href="carrito.php" style="color: #f10f5a"><i class="fa-solid fa-user active"></i> Cuenta</a></li>';
+                    } else {
+                        echo '<li class="nav-item"><a class="nav-link" href="carrito.php" style="color: #f10f5a;">' . $_SESSION["username"] . ' <i class="fa-solid fa-cart-shopping"></i>(' . $cant_total_productos . ')</a></li>';
                     }
-                    else
-                    {
-                        if (!isset($_SESSION["username"]))
-                        {
-                            header("location: login.php");
-                            exit();
-                        }
+                    ?>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-// Conectar a la base de datos (reemplaza 'usuario', 'contraseña' y 'nombre_base_de_datos' con tus propios valores)
-                        $conexion = new mysqli("localhost", "root", "123456", "nutricode");
+    <div class="container mt-5 pt-4">
+        <h1 class="text-center" data-aos="fade-up">Nuestros Servicios</h1>
 
-                        if ($conexion->connect_error)
-                        {
-                            die("La conexión a la base de datos falló: " . $conexion->connect_error);
-                        }
-
-// Obtener el ID del usuario actual
-                        $usuario_id = $_SESSION["user_id"];
-// cant articulos en carrito:
-                        $consulta = "SELECT COUNT(*) AS total_productos, SUM(cantidad) AS cantidad_total
-             FROM carritos
-             WHERE usuario_id = $usuario_id";
-
-// Ejecuta la consulta
-                        $resultado = $conexion->query($consulta);
-// Verifica si la consulta fue exitosa
-                        if ($resultado)
-                        {
-                            // Obtiene el resultado como un array asociativo
-                            $fila = $resultado->fetch_assoc();
-
-                            // Almacena el total de productos en una variable
-                            $cant_total_productos = $fila['cantidad_total'];
-
-                            if ($cant_total_productos == null)
-                            {
-                                $cant_total_productos = 0;
-                            }
-                            // Cierra la conexión a la base de datos
-                            $conexion->close();
-                        }
-                        else
-                        {
-                            // Si la consulta falla, muestra un mensaje de error
-                        }
-                            ?> 
-                            <li class="nav-item">
-
-                                <a class="nav-link" href="carrito.php" style="color: #000000;"> <?php echo $_SESSION["username"]; ?> &nbsp <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                                    </svg>(<?php echo $cant_total_productos; ?>)</a>
-                            </li><?php
-                    }
-                        ?>
-
-
-                    </ul>
+        <div class="card card-custom" data-aos="fade-up">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Servicio de Entrega</h5>
+                        <p>Entregamos tus pasteles en la comodidad de tu hogar, asegurando frescura y calidad.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="images/entrega_pastel.jpg" alt="Entrega de pastel" class="img-fluid responsive-img">
                 </div>
             </div>
-        </nav>
-    </nav>
-    <br><br><br>
-    <center><h1>Servicios de Nutrición</h1></center>
-    <div class="container-fluid">
-        <div class="container-fluid" style="text-align: center;">
-            <form action="calculadora.php" method="get" style="display: inline-block;">
-                <p>Prueba Nuestra calculadora de Índice de Masa Corporal. ¡Es gratis!</p>
-                <button type="submit" class="btn btn-dark">CALCULADORA</button>
-            </form>
-            <div style="margin-top: 20px;">
-                <img src="img/portada servicios.jpg" alt="" width="1560" height="1110"/>
+        </div>
+
+        <div class="card card-custom" data-aos="fade-up">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="images/metodo_pago.jpg" alt="Método de pago" class="img-fluid responsive-img">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Método de Pago</h5>
+                        <p>Aceptamos pagos únicamente a través de PayPal para una transacción segura.</p>
+                    </div>
+                </div>
             </div>
-            <table class="table" style="margin-top: 20px;">
-                <thead>
-                    <tr>
-                        <th>Servicio</th>
-                        <th>Descripción</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($services as $service): ?>
-                        <tr>
-                            <td><?php echo $service[0]; ?></td>
-                            <td><?php echo $service[1]; ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        </div>
+
+        <div class="card card-custom" data-aos="fade-up">
+            <div class="row g-0">
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Personalización de Pasteles</h5>
+                        <p>Ofrecemos la opción de personalizar pasteles para eventos especiales, incluyendo mensajes y decoraciones a medida.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img src="images/personalizacion_pastel.jpg" alt="Personalización de Pasteles" class="img-fluid responsive-img">
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-custom" data-aos="fade-up">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="images/chatbot.jpg" alt="Chatbot" class="img-fluid responsive-img">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">Chatbot</h5>
+                        <p>Nuestro chatbot está disponible 24/7 para responder tus preguntas frecuentes.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <br><br><br>
-    <footer style="background-color: #333; color: #fff; text-align: center; padding: 20px;">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <h4>Contacto</h4>
-                    <p>Correo electrónico: NutriCode@gmail.com</p>
-                    <p>Teléfono: +51-456-7890</p>
-                    <p>Esta página ha sido visitada <?php echo $visitas; ?> veces.</p>
-                    <p>&copy Derechos reservados NutriCode</p>
-                </div>
+
+    <footer class="py-4">
+    <div class="container">
+        <div class="row text-center text-md-start">
+            <div class="col-md-4 mb-3">
+                <h5>Contacto</h5>
+                <p><i class="fa-solid fa-envelope"></i> Correo: <a href="mailto:dargel@dargelreposteria.com">dargel@dargelreposteria.com</a></p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5>Redes Sociales</h5>
+                <p><a href="https://www.facebook.com/profile.php?id=100063723304943" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a></p>
+                <p><a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a></p>
+                <p><a href="https://tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p> <!-- Añadido TikTok -->
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5>Información</h5>
+                <p>Somos una empresa dedicada a ofrecer los mejores pasteles personalizados para cada ocasión.</p>
             </div>
         </div>
-    </footer>
+    </div>
+    <div class="text-center">
+        <p>&copy; 2024 Reposteria Dargel</p>
+    </div>
+</footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 </body>
+
 </html>

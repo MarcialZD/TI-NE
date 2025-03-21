@@ -1,11 +1,7 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Conectar a la base de datos (reemplaza 'usuario', 'contraseña' y 'nombre_base_de_datos' con tus propios valores)
-    $conexion = new mysqli("localhost", "root", "123456", "nutricode");
-
-    if ($conexion->connect_error) {
-        die("La conexión a la base de datos falló: " . $conexion->connect_error);
-    }
+require 'db_connect.php';
+   
 
     $nombres = $_POST["txtNombres"];
     $apellidos = $_POST["txtApellidos"];
@@ -15,7 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = password_hash($_POST["txtPassword"], PASSWORD_DEFAULT);
     $es_admin = $_POST["txtEsAdmin"];
 
-    // Insertar el nuevo usuario en la tabla
     $sql = "INSERT INTO usuarios (nombres, apellidos, fecha_nacimiento, username, correo, password, es_admin) 
             VALUES ('$nombres', '$apellidos', '$fecha_nacimiento', '$username', '$correo', '$password', '$es_admin')";
 
@@ -42,6 +37,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="estilos/Stylle_registro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VX18B9GBD3');
+</script>
 </head>
 
 <body>

@@ -5,7 +5,7 @@ body {
     text-align: center;
     height: 100vh;
     padding: 0;
-        background: linear-gradient(to right, #2eb44b, #c1c1c1);
+        background: linear-gradient(to right, #ffffff, #c1c1c1);
 
 }
 
@@ -55,12 +55,12 @@ input[type="submit"] {
 
 
 input[type="submit"]:hover {
-    background-color: greenyellow;
+    background-color: rgb(255, 255, 255);
     color: black;
 }
 h2 {
     text-align: center;
-    color: #333;
+    color: #050505;
     margin-top: 70px;
 }
 .container {
@@ -93,7 +93,7 @@ h2 {
     color: #007bff;
 }
 .product button {
-    background-color: greenyellow;
+    background-color: rgb(255, 255, 255);
     color: black;
     padding: 10px 20px;
     border: none;
@@ -101,8 +101,8 @@ h2 {
     cursor: pointer;
 }
 .product button:hover{
-   background-color: green;
-    color: white; 
+   background-color: rgb(255, 255, 255);
+    color: rgb(19, 19, 19); 
 } 
 
 

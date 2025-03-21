@@ -1,19 +1,17 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Conectar a la base de datos (reemplaza 'usuario', 'contraseña' y 'nombre_base_de_datos' con tus propios valores)
-    $conexion = new mysqli("localhost", "root", "123456", "nutricode");
-
-    if ($conexion->connect_error) {
-        die("La conexión a la base de datos falló: " . $conexion->connect_error);
-    }
+require 'db_connect.php';
+   
 
     $nombre = $_POST["txtNombre"];
     $precio = $_POST["txtPrecio"];
+    $stock = $_POST["txtStock"];
+    $descripcion = $_POST["txtDescripcion"];
     $imagen = $_POST["txtImagen"];
 
-    // Insertar el nuevo artículo en la tabla
-    $sql = "INSERT INTO articulos (nombre, precio, imagen) 
-            VALUES ('$nombre','$precio','$imagen')";
+
+    $sql = "INSERT INTO articulos (nombre, precio,stock,descripcion, imagen) 
+            VALUES ('$nombre','$precio','$stock','$descripcion','$imagen')";
 
     if ($conexion->query($sql) === TRUE) {
         $destino = "admin_interface.php";
@@ -38,6 +36,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="estilos/Stylle_registro.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VX18B9GBD3');
+</script>
 </head>
 
 <body>
@@ -71,6 +76,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="txtImagen" class="form-label">Imagen:</label>
                 <input type="text" name="txtImagen" class="form-control" required value="">
             </div>
+            <div class="mb-3">
+                <label for="txtStock" class="form-label">Stock:</label>
+                <input type="text" name="txtStock" class="form-control" required value="">
+            </div>
+            <div class="mb-3">
+                <label for="txtDescripcion" class="form-label">Descripcion:</label>
+                <input type="text" name="txtDescripcion" class="form-control" required value="">
+            </div>
+
             <button class="btn btn-primary" type="submit">Agregar Artículo</button>
             <a href="admin_interface.php" class="btn btn-secondary">Regresar</a>
         </form>

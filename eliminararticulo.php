@@ -7,12 +7,7 @@ if (!isset($_SESSION["username"])) {
     exit();
 }
 
-// Conectar a la base de datos (reemplaza 'usuario', 'contraseña' y 'nombre_base_de_datos' con tus propios valores)
-$conexion = new mysqli("localhost", "root", "123456", "nutricode");
-
-if ($conexion->connect_error) {
-    die("La conexión a la base de datos falló: " . $conexion->connect_error);
-}
+require 'db_connect.php';
 
 // Obtener el ID del usuario actual
 $usuario_id = $_SESSION["user_id"];

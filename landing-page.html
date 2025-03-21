@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delicias de Dargel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #faeae5;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            background-color: #a5dbdf;
+            padding: 10px;
+            width: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        header img {
+            max-height: 100px; /* Ajusta la altura del logo */
+        }
+
+        .hero {
+            position: relative;
+            margin: 20px 0;
+            max-width: 1200px;
+            width: 100%;
+            height: 400px; /* Ajusta la altura según sea necesario */
+            display: flex;
+            align-items: center; /* Centra verticalmente el contenido */
+            background-image: url('images/pasteleria.jpg'); /* Cambia la ruta a tu imagen */
+            background-size: cover; /* La imagen cubre todo el área */
+            background-position: left center; /* Alinea la imagen a la izquierda */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-text {
+            flex: 1; /* Toma el espacio disponible */
+            color: white; /* Color del texto */
+            padding-left: 20px; /* Espacio interno a la izquierda */
+            text-align: left; /* Alinear texto a la izquierda */
+        }
+
+        .form-section {
+            flex: 0 0 350px; /* Ancho fijo del formulario */
+            padding: 20px;
+            text-align: left;
+            background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con un poco de transparencia */
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-left: 20px; /* Espacio entre el texto y el formulario */
+            transition: transform 0.3s; /* Transición para el efecto hover */
+        }
+
+        .form-section:hover {
+            transform: translateY(-5px); /* Efecto de elevación al pasar el ratón */
+        }
+
+        h1, h2, h3,h4 {
+            margin: 10px 0;
+            color: #4d4c4c;
+        }
+
+        h2 {
+            font-size: 1.5em; /* Tamaño de fuente del subtítulo */
+            color: #555;
+        }
+
+        h3 {
+            font-size: 1.3em; /* Tamaño de fuente del subtítulo */
+            margin-bottom: 10px; /* Espacio inferior */
+        }
+
+        input, textarea {
+            padding: 12px; /* Espaciado interno */
+            margin: 10px 0; /* Espaciado externo */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 300px; /* Ancho reducido de los inputs */
+            font-size: 1em; /* Tamaño de fuente */
+        }
+
+        button {
+            padding: 12px 15px;
+            background-color: #a5dbdf;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.3s; /* Transición para el efecto hover */
+            margin-top: 10px; /* Espaciado superior para el botón */
+            font-size: 1em; /* Tamaño de fuente */
+        }
+
+        button:hover {
+            background-color: #88c3c7;
+            transform: translateY(-2px); /* Efecto de elevación al pasar el ratón */
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #a5dbdf;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .comments-section {
+            flex: 1;
+            padding: 20px;
+            text-align: left;
+            max-width: 600px;
+            width: 100%;
+            background-color: #ffffff; /* Fondo blanco */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+            margin: 20px auto; /* Centramos la sección */
+        }
+
+        .comments-section h3 {
+            font-size: 1.8em; /* Tamaño de fuente del título */
+            color: #333; /* Color del texto */
+            margin-bottom: 15px; /* Espaciado inferior */
+            text-align: center; /* Centramos el título */
+        }
+
+        blockquote {
+            background-color: #f9f9f9; /* Fondo gris claro para las citas */
+            border-left: 4px solid #a5dbdf; /* Borde lateral */
+            padding: 10px 15px; /* Espaciado interno */
+            margin: 15px 0; /* Espaciado externo */
+            border-radius: 8px; /* Bordes redondeados */
+            font-style: italic; /* Estilo cursivo para el texto */
+        }
+
+        blockquote p {
+            margin: 0; /* Sin márgenes en el párrafo */
+            color: #555; /* Color del texto */
+        }
+
+        blockquote footer {
+            text-align: right; /* Alinear a la derecha */
+            font-weight: bold; /* Negrita para el nombre */
+            color: #333; /* Color del nombre */
+            margin-top: 5px; /* Espacio superior */
+        }
+
+        .offer {
+            background-color: #ffffff; /* Fondo blanco */
+            padding: 20px; /* Espaciado interno */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+           
+            margin: 20px auto; /* Centramos la sección */
+            text-align: center; /* Centramos el texto */
+            width: 90%;
+        }
+
+        .offer h3 {
+            font-size: 1.8em; /* Tamaño de fuente del título */
+            color: #333; /* Color del texto */
+            margin-bottom: 10px; /* Espaciado inferior */
+        }
+
+        .offer p {
+            font-size: 1.2em; /* Tamaño de fuente del párrafo */
+            color: #555; /* Color del texto */
+            margin: 10px 0; /* Espaciado superior e inferior */
+        }
+
+        #countdown {
+            font-weight: bold;
+            font-size: 1.5em; /* Tamaño de fuente para el temporizador */
+            color: #ff0000; /* Color rojo para llamar la atención */
+            margin-top: 15px; /* Espacio superior */
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+                align-items: center; /* Centra los elementos */
+                height: auto; /* Altura automática */
+                background-position: center; /* Centra la imagen */
+            }
+
+            .hero-text {
+                padding-left: 0; /* Sin espaciado interno en pantallas pequeñas */
+                text-align: center; /* Centra el texto */
+            }
+
+            .form-section {
+                margin-left: 0; /* Elimina el margen izquierdo en pantallas pequeñas */
+                width: 100%; /* Hace que el formulario ocupe todo el ancho */
+                max-width: none; /* Elimina el ancho máximo para pantallas pequeñas */
+            }
+        }
+
+        .form-container {
+            display: flex; /* Permite que el formulario y la hero estén uno al lado del otro */
+            justify-content: space-between; /* Espacio entre la hero y el formulario */
+            max-width: 1200px; /* Ancho máximo del contenedor */
+            width: 100%; /* Ocupa todo el ancho disponible */
+            margin: 20px 0; /* Espaciado superior e inferior */
+        }
+        .form-section p {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo blanco con transparencia */
+    padding: 15px; /* Espaciado interno */
+    border-radius: 5px; /* Bordes redondeados */
+    color: #333; /* Color del texto */
+    font-size: 1em; /* Tamaño de fuente */
+    margin-bottom: 15px; /* Espacio inferior */
+    text-align: center; /* Centra el texto */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    
+}
+.hero {
+    transition: transform 0.3s ease; /* Suaviza la transición */
+}
+
+.hero:hover {
+    transform: scale(1.05); /* Aumenta el tamaño al 105% */
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <img src="images/logo.png" alt="Logo Dargel"> <!-- Cambia la ruta a tu logo -->
+    </header>
+    
+    <div class="form-container">
+        <section class="hero">
+            <div class="hero-text">
+                <h1>¡Bienvenido a la Experiencia Dargel!</h1>
+                <h4>Convierte tus ideas en un pastel único que te deleitará </h4>
+                
+               
+                
+            </div>
+            
+        </section>
+
+        <div class="form-section">
+            <p>¡Completa el formulario y recibe un 10% de descuento en tu próximo pedido, así como las últimas novedades de nuestros productos!</p>
+            <form id="contact-form">
+                <input type="text" placeholder="Tu Nombre" required>
+                <input type="email" placeholder="Tu Email" required>
+                <input type="tel" placeholder="Tu Teléfono" required>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+        
+        
+    </div>
+
+    <section class="offer">
+        <h3>Oferta Especial! 20% de Descuento en tu Primer Pedido</h3>
+        <p>¡No te lo pierdas!  Utiliza el código "UCH" al realizar tu pedido.</p>
+        <div id="countdown">
+            <h4>Tiempo restante:</h4>
+            <span id="timer"></span>
+        </div>
+    </section>
+    
+    <section class="comments-section">
+        <h3>Lo que dicen nuestros clientes:</h3>
+        <blockquote>
+            <p>"Los mejores pasteles que he probado. ¡Siempre vuelvo por más!" - Ana M.</p>
+        </blockquote>
+        <blockquote>
+            <p>"Excelentes opciones personalizadas para mis eventos." - Luis G.</p>
+        </blockquote>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Delicias de Dargel. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        document.getElementById('contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('¡Gracias por unirte a nuestra comunidad! Pronto recibirás novedades y tu descuento.');
+            this.reset(); // Resetea el formulario
+        });
+
+        // Contador para la oferta
+        const countdownDate = new Date().getTime() + 7 * 24 * 60 * 60 * 1000; // 7 días a partir de ahora
+
+        const timerElement = document.getElementById('timer');
+
+        const countdown = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countdownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (distance < 0) {
+                clearInterval(countdown);
+                timerElement.innerHTML = "La oferta ha expirado.";
+            } else {
+                timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+            }
+        }, 1000);
+    </script>
+</body>
+</html>

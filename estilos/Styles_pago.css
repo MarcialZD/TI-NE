@@ -10,7 +10,6 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-image: url('https://i.pinimg.com/originals/86/cc/bb/86ccbb5469e5192dbdc7c031ca45d0c2.gif');
     background-size: cover; 
     background-repeat: no-repeat; 
     text-align: center;
@@ -46,7 +45,7 @@ form label input {
     outline: none;
     border: none;
     color: #252525;
-    border-bottom: solid 1px rgb(85, 205, 135);
+    border-bottom: solid 1px #f0f0f0;
     padding: 0 5px;
     font-size: 20px;
 }
@@ -69,5 +68,5 @@ form #enviar {
     font-size: 20px;
 }
 body {
-    background-color: white !important; /* Usa !important para asegurarte de que esta regla tenga prioridad */
+    background-color: #70c6cc;
 }

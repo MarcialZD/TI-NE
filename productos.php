@@ -1,172 +1,331 @@
 <?php
-// Conectar a la base de datos (reemplaza 'usuario', 'contraseña' y 'nombre_base_de_datos' con tus propios valores)
-$conexion = new mysqli("localhost", "root", "123456", "nutricode");
+require 'db_connect.php';
 
-if ($conexion->connect_error)
-{
-    die("La conexión a la base de datos falló: " . $conexion->connect_error);
-}
 
 // Obtener todos los artículos de la tabla 'articulos'
-$articulos_sql = "SELECT * FROM articulos";
+$articulos_sql = "
+    SELECT 
+        id,
+        nombre,
+        precio,stock,imagen,
+        porcentaje_descuento,
+        fecha_maxima_descuento,
+        CASE 
+            WHEN fecha_maxima_descuento < CURDATE() THEN precio
+            ELSE precio - (precio * porcentaje_descuento / 100)
+        END AS precio_final,
+        CASE 
+            WHEN fecha_maxima_descuento >= CURDATE() THEN porcentaje_descuento
+            ELSE 0
+        END AS descuento
+    FROM articulos
+";
+
 $articulos_resultado = $conexion->query($articulos_sql);
+
+
+
+
+
+
+session_start();
+$cant_total_productos = 0;
+if (isset($_SESSION["username"])) {
+    include 'db_connect.php';
+
+    $usuario_id = $_SESSION["user_id"];
+
+    $consulta = "SELECT COUNT(*) AS total_productos, SUM(cantidad) AS cantidad_total
+                 FROM carritos
+                 WHERE usuario_id = $usuario_id";
+
+    $resultado = $conexion->query($consulta);
+
+    if ($resultado) {
+        $fila = $resultado->fetch_assoc();
+        $cant_total_productos = $fila['cantidad_total'] ?? 0;
+    }
+
+    $conexion->close();
+}
 ?>
 
-<?php
-// cantidad para el carrito
-// Verificar si el usuario ha iniciado sesión
-?>
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Agregar Artículo</title>
-        <link rel="stylesheet" href="css/bootstrap.min.css">
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <link rel="stylesheet" href="estilos/Style_agregararticulo.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Artículo</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="estilos/Style_agregararticulo.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="estilos/Style_servicios.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="Principal.php">
-                    <img src="img/NutriCode_logo_sin_fondo.png" width="30" height="30" alt="">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="Principal.php" style="color: #000000;">
-                                Inicio
-                            </a>
-                        </li>
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="servicios.php" style="color: #000000;">Servicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="quienesSomos.php" style="color: #000000;">¿Quienes somos?</a>
-                        </li>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6BER8BQQ0Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-                        <li class="nav-item">
-                            <a class="nav-link" href="productos.php" style="color: #000000;"></i>Productos</a>
-                        </li>
-                        <?php
-                        session_start();
+  gtag('config', 'G-6BER8BQQ0Z');
+</script>
 
-                        if (!isset($_SESSION["username"]))
-                        {
-                            ?>  <li class="nav-item">
-                                <a class="nav-link" href="carrito.php" style="color: #000000;"><i class="fa-solid fa-user"></i>Cuenta</a>
-                            </li><?php
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KK32PFZL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+
+  
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KK32PFZL');</script>
+<!-- End Google Tag Manager -->
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<!-- Hotjar Tracking Code for Site 5212520 (name missing) -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:5212520,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+
+
+
+        nav {
+            background-color: #faeae5;
+            text-align: center;
+        }
+
+
+
+
+        .card {
+            background-color: #faeae5;
+
+
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .btn {
+            background-color: #e881a2;
+            color: #faeae5;
+        }
+
+        .btn:hover {
+            background-color: #1a9bb8;
+            color: #faeae5;
+
+        }
+
+
+        #user-input {
+            flex-grow: 1;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        button {
+            background-color: #e881a2;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        footer {
+            background-color: #faeae5;
+
+            color: #e8306d;
+            padding: 20px 0;
+        }
+
+        footer a {
+            color: #e8306d;
+
+
+            text-decoration: none;
+        }
+
+        footer img {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'G-VX18B9GBD3');
+    </script>
+</head>
+
+<body>
+
+
+<nav class="navbar navbar-expand-lg navbar-light ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.php">
+                <img src="img/NutriCode_logo_sin_fondo.png" width="100" height="90" alt="Logo">
+            </a>
+            <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav" style="color: #0e9edf;">
+                <ul class="navbar-nav ms-auto" style="color: #0e9edf;">
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.php" style="color: #f10f5a;">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="servicios.php" style="color: #f10f5a">Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.php" style="color: #f10f5a">Pasteles</a>
+                    </li>
+                    <?php
+                    if (!isset($_SESSION["username"])) {
+                        echo '<li class="nav-item"><a class="nav-link" href="carrito.php" style="color: #f10f5a"><i class="fa-solid fa-user active"></i> Cuenta</a></li>';
+                    } else {
+                        echo '<li class="nav-item"><a class="nav-link" href="carrito.php" style="color: #f10f5a;">' . $_SESSION["username"] . ' <i class="fa-solid fa-cart-shopping"></i>(' . $cant_total_productos . ')</a></li>';
                     }
-                    else
-                    {
-                        if (!isset($_SESSION["username"]))
-                        {
-                            header("location: login.php");
-                            exit();
-                        }
-
-// Conectar a la base de datos (reemplaza 'usuario', 'contraseña' y 'nombre_base_de_datos' con tus propios valores)
-                        $conexion = new mysqli("localhost", "root", "123456", "nutricode");
-
-                        if ($conexion->connect_error)
-                        {
-                            die("La conexión a la base de datos falló: " . $conexion->connect_error);
-                        }
-
-// Obtener el ID del usuario actual
-                        $usuario_id = $_SESSION["user_id"];
-// cant articulos en carrito:
-                        $consulta = "SELECT COUNT(*) AS total_productos, SUM(cantidad) AS cantidad_total
-             FROM carritos
-             WHERE usuario_id = $usuario_id";
-
-// Ejecuta la consulta
-                        $resultado = $conexion->query($consulta);
-// Verifica si la consulta fue exitosa
-                        if ($resultado)
-                        {
-                            // Obtiene el resultado como un array asociativo
-                            $fila = $resultado->fetch_assoc();
-
-                            // Almacena el total de productos en una variable
-                            $cant_total_productos = $fila['cantidad_total'];
-
-                            if ($cant_total_productos == null)
-                            {
-                                $cant_total_productos = 0;
-                            }
-                            // Cierra la conexión a la base de datos
-                            $conexion->close();
-                        }
-                        else
-                        {
-                            // Si la consulta falla, muestra un mensaje de error
-                        }
-                            ?> 
-                            <li class="nav-item">
-
-                                <a class="nav-link" href="carrito.php" style="color: #000000;"> <?php echo $_SESSION["username"]; ?> &nbsp <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                    <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                                    </svg>(<?php echo $cant_total_productos; ?>)</a>
-                            </li><?php
-                    }
-                        ?>
-
-
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <br>          <br> <br><br>
-
-
-        <h1 class="display-8">Agregar Artículo</h1>
-        <br>
-
-        <br><br>
-
-        <div class="container">
-
-            <div class="row">
-<?php
-while ($articulo = $articulos_resultado->fetch_assoc())
-{
-    echo "<div class='col-md-4 mb-4'>";
-    echo "<div class='card'>";
-    echo "<img src='{$articulo['imagen']}' class='card-img-top' alt='{$articulo['nombre']}'>";
-    echo "<div class='card-body'>";
-    echo "<h5 class='card-title'>{$articulo['nombre']}</h5>";
-    echo "<p class='card-text'>Strock: {$articulo['stock']} unidades</p>";
-    echo "<p class='card-text'>Precio: {$articulo['precio']} USD</p>";
-
-    // Formulario para agregar al carrito
-    echo "<form action='agregararticulo.php' method='post'>";
-    echo "<input type='hidden' name='articulo_id' value='{$articulo['id']}'>";
-    echo "<div class='mb-3'>";
-    echo "<label for='cantidad{$articulo['id']}' class='form-label'>Cantidad:</label>";
-    echo "<input type='number' name='cantidad' id='cantidad{$articulo['id']}' value='1' min='1' class='form-control' required autocomplete='off'>";
-    echo "</div>";
-    echo "<button type='submit' class='btn btn-success'>Agregar al Carrito</button>";
-
-    echo "</form>";
-
-    echo "</div>";
-    echo "</div>";
-    echo "</div>";
-}
-?>
+                    ?>
+                </ul>
             </div>
         </div>
-    </body>
+    </nav>
+
+
+
+
+
+
+    <div class="container">
+        <div class="row">
+            <?php
+            while ($articulo = $articulos_resultado->fetch_assoc()) {
+                echo "<div class='col-md-4 mb-4'>";
+                echo "<div class='card fade-in'>";
+                echo "<img src='{$articulo['imagen']}' class='card-img-top' alt='{$articulo['nombre']}'>";
+                echo "<div class='card-body'>";
+                echo "<h5 class='card-title'>{$articulo['nombre']}</h5>";
+                echo "<p class='card-text'>Stock: {$articulo['stock']} unidades</p>";
+
+                // Mostrar el precio y el descuento si aplica
+                if ($articulo['descuento'] > 0) {
+                    echo "<p class='card-text'>Precio original: <del>{$articulo['precio']} USD</del></p>";
+                    echo "<p class='card-text'>Descuento: {$articulo['descuento']}%</p>";
+                    echo "<p class='card-text'>Precio final: $ " . round($articulo['precio_final'], 2) . " </p>";
+                } else {
+                    echo "<p class='card-text'>Precio: $ {$articulo['precio']} </p>";
+                }
+
+                // Formulario para agregar al carrito
+                echo "<form action='agregararticulo.php' method='post'>";
+                echo "<input type='hidden' name='articulo_id' value='{$articulo['id']}'>";
+                echo "<div class='mb-3'>";
+                echo "<label for='cantidad{$articulo['id']}' class='form-label'>Cantidad:</label>";
+                echo "<input type='number' name='cantidad' id='cantidad{$articulo['id']}' value='1' min='1' class='form-control' required autocomplete='off'>";
+                echo "</div>";
+                // Botón para ver el producto
+                echo "<button type='submit' class='btn'>Agregar al Carrito</button> <br>";
+                echo "<a href='vistaProducto.php?id={$articulo['id']}' class='btn mt-2'>Ver Producto</a>";
+                echo "</form>";
+
+                echo "</div>";
+                echo "</div>";
+                echo "</div>";
+            }
+            ?>
+        </div>
+    </div>
+
+</body>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const serviceCards = document.querySelectorAll('.fade-in');
+        serviceCards.forEach((card, index) => {
+            setTimeout(() => {
+                card.classList.add('visible');
+            }, index * 200); // Ajusta el tiempo según sea necesario
+        });
+    });
+</script>
+<footer class="py-4">
+    <div class="container">
+        <div class="row text-center text-md-start">
+            <div class="col-md-4 mb-3">
+                <h5>Contacto</h5>
+                <p><i class="fa-solid fa-envelope"></i> Correo: <a href="mailto:dargel@dargelreposteria.com">dargel@dargelreposteria.com</a></p>
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5>Redes Sociales</h5>
+                <p><a href="https://www.facebook.com/profile.php?id=100063723304943" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a></p>
+                <p><a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a></p>
+                <p><a href="https://tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i> TikTok</a></p> <!-- Añadido TikTok -->
+            </div>
+            <div class="col-md-4 mb-3">
+                <h5>Información</h5>
+                <p>Somos una empresa dedicada a ofrecer los mejores pasteles personalizados para cada ocasión.</p>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <p>&copy; 2024 Reposteria Dargel</p>
+    </div>
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
 
 </html>

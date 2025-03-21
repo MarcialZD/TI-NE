@@ -12,15 +12,12 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: linear-gradient(to right, #2eb44b, #c1c1c1);
+    background-color: #70c6cc;
 
-}
-body {
+
 
     min-height: 100vh;
-    background-image:  url('https://media-s3-us-east-1.ceros.com/citywire/images/2020/10/27/a312127f31fd6c68a5743dae09b3a760/gettyimages-916492158-1.gif');
- background-size: cover; 
-    background-repeat: no-repeat; 
+   
     text-align: center;
 }
 
@@ -34,16 +31,15 @@ body {
 form {
     display: flex;
     flex-direction: column;
-    background: #fff;
+
+    background-color: #faeae5;
     text-align: center;
-    padding: 20px 25px;
-    box-shadow: 0px 5px 10px rgba(42, 174, 75, 0.7);
-    margin-top: 60px;
+    box-shadow: 0px 5px 10px rgba(255, 255, 255, 0.7);
+    margin-bottom: 2%;
 
 }
 
 form .title {
-    color: #252525;
     font-size: 35px;
     font-weight: 800;
     margin-bottom: 30px;
@@ -55,7 +51,7 @@ form label {
 
 form label .fa-solid {
     font-size: 20px;
-    color: rgb(81, 150, 94);
+    color: rgb(255, 255, 255);
     margin-right: 10px;
 }
 
@@ -63,7 +59,7 @@ form label input {
     outline: none;
     border: none;
     color: #252525;
-    border-bottom: solid 1px rgb(85, 205, 135);
+    border-bottom: solid 1px rgb(255, 255, 255);
     padding: 0 5px;
     font-size: 20px;
 }
@@ -84,11 +80,84 @@ form .link{
 }
 
 form #enviar{
-    color: #fff;
+    color: #faeae5;
     border: none;
-    background: linear-gradient(to right,#24b63e,#46dd8f);
+background-color:#e881a2;
     padding: 10px,15px;
     cursor: pointer;
     font-size: 20px;
 
+}
+
+@media (max-width: 768px) {
+    form {
+        padding-top: 155%; /* Ajusta el padding para pantallas pequeñas */
+        margin-top: 135%;
+        width: 90%; /* Asegúrate de que el formulario ocupe el 90% en pantallas pequeñas */
+    }
+
+    form .title {
+        font-size: 1.5rem; /* Ajusta el tamaño del título */
+    }
+
+    form label input {
+        font-size: 1rem; /* Reduce el tamaño del texto de los inputs */
+    }
+
+    form #enviar {
+        font-size: 1rem; /* Ajusta el tamaño del botón */
+    }
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column; /* Cambiar a columna para apilar elementos */
+    align-items: center;
+    justify-content: flex-start; /* Alinear al inicio */
+    min-height: 100vh;
+    background-color: #70c6cc;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    background-color: #faeae5;
+    text-align: center;
+    padding: 10px 25px;
+    box-shadow: 0px 5px 10px rgba(255, 255, 255, 0.7);
+    width: 100%; /* Asegurar que el formulario ocupe el 100% */
+    max-width: 500px; /* Limitar el ancho máximo del formulario */
+}
+
+footer {
+    margin-top: 12%; /* Mover el footer al final del body */
+    width: 98%; /* Asegurar que el footer ocupe todo el ancho */
+}
+
+/* Resto del CSS sigue igual */
+@media (max-width: 768px) {
+    form {
+        padding: 100px; /* Ajusta el padding para pantallas pequeñas */
+        margin-top: 100px; /* Elimina el margen superior para que el formulario se ajuste bien */
+        width: 100%; /* Asegúrate de que el formulario ocupe el 100% en pantallas pequeñas */
+    }
+
+    form .title {
+        font-size: 1.5rem; /* Ajusta el tamaño del título */
+    }
+
+    form label input {
+        font-size: 1rem; /* Reduce el tamaño del texto de los inputs */
+    }
+
+    form #enviar {
+        font-size: 1rem; /* Ajusta el tamaño del botón */
+    }
 }

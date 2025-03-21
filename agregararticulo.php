@@ -3,16 +3,12 @@ session_start();
 
 // Verificar si el usuario ha iniciado sesión
 if (!isset($_SESSION["username"])) {
-    header("location: login.php");
+    header("location: login");
     exit();
 }
 
 // Conectar a la base de datos
-$conexion = new mysqli("localhost", "root", "123456", "nutricode");
-
-if ($conexion->connect_error) {
-    die("La conexión a la base de datos falló: " . $conexion->connect_error);
-}
+require 'db_connect.php';
 
 // Obtener todos los artículos de la tabla 'articulos'
 $articulos_sql = "SELECT * FROM articulos";
@@ -42,21 +38,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["articulo_id"]) && isse
     $stock_disponible = $stock_row['stock'];
 
     if ($stock_disponible < $cantidad) {
-        echo '<script>alert("No hay suficiente stock disponible.");</script>';
+        echo '<script>alert("No hay suficiente stock disponible."); window.location.href = "productos.php";</script>';
     } else {
-        if ($verificar_resultado->num_rows > 0) {
-            // Si el artículo ya está en el carrito, actualizar la cantidad
-            $stmt = $conexion->prepare("UPDATE carritos SET cantidad = cantidad + ? WHERE usuario_id = ? AND articulo_id = ?");
-            $stmt->bind_param("iii", $cantidad, $usuario_id, $articulo_id);
-            $stmt->execute();
-            echo '<script>alert("Artículo acumulado");</script>';
-        } else {
-            // Si el artículo no está en el carrito, insertarlo
-            $stmt = $conexion->prepare("INSERT INTO carritos (usuario_id, articulo_id, cantidad, subtotal) VALUES (?, ?, ?, 0)");
-            $stmt->bind_param("iii", $usuario_id, $articulo_id, $cantidad);
-            $stmt->execute();
-            echo '<script>alert("Artículo agregado");</script>';
-        }
+
+        // Si el artículo no está en el carrito, insertarlo
+        // Primero, obtenemos el precio final del artículo considerando el descuento
+        $stmt_precio = $conexion->prepare("
+            SELECT 
+                CASE 
+                    WHEN fecha_maxima_descuento >= CURDATE() THEN 
+                        precio - (precio * porcentaje_descuento / 100)
+                    ELSE 
+                        precio 
+                END AS precio_final
+            FROM articulos 
+            WHERE id = ?
+        ");
+        $stmt_precio->bind_param("i", $articulo_id);
+        $stmt_precio->execute();
+        $stmt_precio->bind_result($precio_final);
+        $stmt_precio->fetch();
+        $stmt_precio->close();
+
+        // Redondear el precio final a dos decimales
+        $precio_final = round($precio_final, 2);
+
+        // Calculamos el subtotal usando el precio final (con descuento si aplica)
+        $subtotal = $cantidad * $precio_final;
+
+        // Ahora insertamos en la tabla carritos
+        $stmt = $conexion->prepare("INSERT INTO carritos (usuario_id, articulo_id, cantidad, subtotal) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("iiid", $usuario_id, $articulo_id, $cantidad, $subtotal);
+        $stmt->execute();
+        $stmt->close();
 
         // Actualizar el stock disponible
         $nuevo_stock = $stock_disponible - $cantidad;
@@ -65,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["articulo_id"]) && isse
         $stmt->execute();
 
         // Redirigir a carrito.php después de agregar al carrito
-        header("location: carrito.php");
+        echo '<script>alert("Artículo agregado"); window.location.href = "productos.php";</script>';
         exit();
     }
 }
@@ -90,90 +104,58 @@ $conexion->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agregar Artículo</title>
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="estilos/Style_agregararticulo.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Document</title>
+    
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6BER8BQQ0Z"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-6BER8BQQ0Z');
+</script>
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KK32PFZL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+
+  
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KK32PFZL');</script>
+<!-- End Google Tag Manager -->
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<!-- Hotjar Tracking Code for Site 5212520 (name missing) -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:5212520,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
 </head>
-
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="Principal.php">
-                    <img src="img/NutriCode_logo_sin_fondo.png" width="30" height="30" alt="">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="Principal.php" style="color: #000000;">
-                                Inicio
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="servicios.php" style="color: #000000;">Servicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="quienesSomos.php" style="color: #000000;">¿Quienes somos?</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="productos.php" style="color: #000000;"></i>Productos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="carrito.php" style="color: #000000;"> <?php echo $_SESSION["username"]; ?> &nbsp <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
-                                <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2"/>
-                                </svg>(<?php echo $cant_total_productos; ?>)</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-    <br><br><br><br>
-
-    <h1 class="display-8">Agregar Artículo</h1>
-    <br>
-    <a class="btn btn-outline-dark" href="carrito.php">Regresar al Carrito</a>
-
-    <br><br>
-
-    <div class="container">
-        <div class="row">
-            <?php
-            while ($articulo = $articulos_resultado->fetch_assoc()) {
-                echo "<div class='col-md-4 mb-4'>";
-                echo "<div class='card'>";
-                echo "<img src='{$articulo['imagen']}' class='card-img-top' alt='{$articulo['nombre']}'>";
-                echo "<div class='card-body'>";
-                echo "<h5 class='card-title'>{$articulo['nombre']}</h5>";
-                echo "<p class='card-text'>Stock: {$articulo['stock']} unidades</p>";
-                echo "<p class='card-text'>Precio: {$articulo['precio']} USD</p>";
-
-                echo "<form action='agregararticulo.php' method='post'>";
-                echo "<input type='hidden' name='articulo_id' value='{$articulo['id']}'>";
-                echo "<div class='mb-3'>";
-                echo "<label for='cantidad{$articulo['id']}' class='form-label'>Cantidad:</label>";
-                echo "<input type='number' name='cantidad' id='cantidad{$articulo['id']}' value='1' min='1' class='form-control' required autocomplete='off'>";
-                echo "</div>";
-                echo "<button type='submit' class='btn btn-success'>Agregar al Carrito</button>";
-                echo "</form>";
-
-                echo "</div>";
-                echo "</div>";
-                echo "</div>";
-            }
-            ?>
-        </div>
-    </div>
+    
 </body>
-
 </html>

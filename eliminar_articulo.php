@@ -7,13 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["articulo_id"]))
     $articulo_id = $_POST["articulo_id"];
 
     // Conectar a la base de datos (reemplazar con tus propios valores)
-    $conexion = new mysqli("localhost", "root", "123456", "nutricode");
-
-    // Verificar la conexión a la base de datos
-    if ($conexion->connect_error)
-    {
-        die("La conexión a la base de datos falló: " . $conexion->connect_error);
-    }
+require 'db_connect.php';
+  
 
     // Consultar la base de datos para eliminar el usuario
     $sql = "DELETE FROM articulos WHERE id=?";
@@ -39,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["articulo_id"]))
 else
 {
     // Si no se ha enviado el formulario, redirigir a la página anterior
-    header("location: admin_interface.php");
+    header("location: admin_interface_productos.php");
     exit(); // Agrega esto para asegurarte de que el script se detenga después de redirigir
 }
 

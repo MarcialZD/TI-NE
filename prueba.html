@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatbot Dargel</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilo para la ventana flotante del chatbot */
+.chat-container {
+    width: 300px;
+    height: 400px;
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    display: none; /* Oculta el chat al principio */
+    flex-direction: column;
+}
+
+.chat-header {
+    background-color: #f57c00;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.chat-box {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+button {
+    background-color: #f57c00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #e65100;
+}
+
+.bot-text, .user-text {
+    margin: 10px 0;
+}
+
+.bot-text {
+    color: green;
+}
+
+.user-text {
+    color: blue;
+    text-align: right;
+}
+
+/* Icono del chatbot que aparece en la esquina */
+.chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f57c00;
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+    </style>
+</head>
+<body>
+    <div class="chat-icon" id="chat-icon" onclick="toggleChat()">
+        💬
+    </div>
+    
+    <div class="chat-container" id="chat-container">
+        <div class="chat-header">
+            <h3>Chat Dargel</h3>
+            <button onclick="toggleChat()">✖</button>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <p class="bot-text">¡Hola! Soy el chatbot de Dargel, ¿en qué puedo ayudarte?</p>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Escribe tu pregunta aquí..." />
+            <button onclick="sendMessage()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+    const chatContainer = document.getElementById('chat-container');
+    const chatIcon = document.getElementById('chat-icon');
+    
+    if (chatContainer.style.display === 'none' || chatContainer.style.display === '') {
+        chatContainer.style.display = 'flex';
+        chatIcon.style.display = 'none'; // Oculta el ícono cuando el chat está abierto
+    } else {
+        chatContainer.style.display = 'none';
+        chatIcon.style.display = 'flex'; // Muestra el ícono cuando el chat está cerrado
+    }
+}
+
+function sendMessage() {
+    const userInput = document.getElementById("user-input").value;
+    const chatBox = document.getElementById("chat-box");
+
+    // Muestra el mensaje del usuario
+    const userMessage = document.createElement("p");
+    userMessage.classList.add("user-text");
+    userMessage.textContent = userInput;
+    chatBox.appendChild(userMessage);
+
+    // Limpiar el campo de entrada
+    document.getElementById("user-input").value = '';
+
+    // Respuestas automáticas del chatbot
+    const botResponse = document.createElement("p");
+    botResponse.classList.add("bot-text");
+
+    if (userInput.toLowerCase().includes("productos")) {
+        botResponse.textContent = "Ofrecemos pasteles, cupcakes, y galletas decoradas.";
+    } else if (userInput.toLowerCase().includes("horario")) {
+        botResponse.textContent = "Estamos abiertos de lunes a viernes de 9 a.m. a 6 p.m.";
+    } else if (userInput.toLowerCase().includes("ubicación")) {
+        botResponse.textContent = "Estamos en Av. Principal 123, Lima, Perú.";
+    } else {
+        botResponse.textContent = "Lo siento, no entiendo tu pregunta. ¿Puedes intentar de nuevo?";
+    }
+
+    chatBox.appendChild(botResponse);
+    chatBox.scrollTop = chatBox.scrollHeight; // Scroll al final del chat
+}
+
+    </script>
+</body>
+</html>

@@ -1,18 +1,15 @@
 <?php
 
 session_start();
+include 'db_connect.php';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["username"]) && isset($_POST["password"]))
 {
     $username = $_POST["username"];
     $password = $_POST["password"];
 
-    $conexion = new mysqli("localhost", "root", "123456", "nutricode");
-
-    if ($conexion->connect_error)
-    {
-        die("La conexión a la base de datos falló: " . $conexion->connect_error);
-    }
+  
 
     $sql = "SELECT * FROM usuarios WHERE username=?";
     $stmt = $conexion->prepare($sql);

@@ -3,6 +3,7 @@
 // Conectar a la base de datos
 function conectarDB()
 {
+    // $conexion = new mysqli("sql101.infinityfree.com", "if0_37311818", "Ql8Biwu7fymI5s", "if0_37311818_nutricode");
     $conexion = new mysqli("localhost", "root", "123456", "nutricode");
 
     if ($conexion->connect_error) {

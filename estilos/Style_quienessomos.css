@@ -3,23 +3,23 @@ body{
 }
 .text-bg-fondo {
   color: black;
-  background-color: rgba(90, 174, 91);
+  background-color: rgb(255, 255, 255);
 }
 .text-bg-fondo1 {
   color: black;
-  background-color: rgba(255, 174, 58);
+  background-color: rgb(253, 253, 253);
 }
 .text-bg-fondo2 {
   color: black;
-  background-color: rgba(58, 135, 255);
+  background-color: rgb(255, 255, 255);
 }
 .text-bg-fondo3 {
   color: white;
-  background-color: rgba(59, 59, 59);
+  background-color: rgb(255, 255, 255);
 }
 .text-bg-fondo4 {
   color: white;
-  background-color: rgba(194, 14, 14);
+  background-color: rgb(255, 255, 255);
 }
 .text-bg-fondo5 {
   color: white;

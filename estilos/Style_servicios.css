@@ -1,13 +1,13 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(to right, #2eb44b, #c1c1c1);
+
     text-align: center;
-    padding: 0;
+
 }
 
 .text-bg-fondo {
   color: black;
-  background-color: rgba(90, 174, 91);
+  background-color: rgb(255, 255, 255);
 }
 .text-bg-fondo1 {
   color: black;

@@ -1,3 +1,147 @@
-body{
-    text-align: center;
+
+.chat-container {
+    width: 300px;
+    margin: 50px auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.chat-box {
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+#user-input {
+    width: 80%;
+    padding: 5px;
+}
+
+button {
+    width: 18%;
+    padding: 5px;
+    background-color: #f57c00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+
+.bot-text, .user-text {
+    margin: 10px 0;
+}
+
+.bot-text {
+    color: green;
+}
+
+.user-text {
+    color: blue;
+    text-align: right;
+}
+/* Estilo para la ventana flotante del chatbot */
+.chat-container {
+    width: 300px;
+    height: 400px;
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    display: none; /* Oculta el chat al principio */
+    flex-direction: column;
+}
+
+.chat-header {
+    background-color: #f57c00;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.chat-header h3 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.chat-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.chat-box {
+    flex-grow: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #ddd;
+    background-color: #f9f9f9;
+}
+
+.chat-input {
+    display: flex;
+    padding: 10px;
+}
+
+#user-input {
+    flex-grow: 1;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+button {
+    background-color: #f57c00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+
+.bot-text, .user-text {
+    margin: 10px 0;
+}
+
+.bot-text {
+    color: green;
+}
+
+.user-text {
+    color: blue;
+    text-align: right;
+}
+
+/* Icono del chatbot que aparece en la esquina */
+.chat-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #f57c00;
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 }

@@ -43,6 +43,7 @@ if (isset($_POST["enviar"]))
 
 
 $nombre = "{$_SESSION["username"]}";
+
 ?>
 <html>
     <head>
