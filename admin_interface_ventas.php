@@ -231,6 +231,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buscar_venta'])) {
     <script>
 function seleccionarVenta(id) {
     document.getElementById("venta_id").value = id;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
 }
 </script>
 </div>
