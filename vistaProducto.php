@@ -258,12 +258,12 @@ $conexion->close(); // Cerrar la conexión a la base de datos
             <form action="vistaProducto.php?id=<?php echo $producto['id']; ?>" method="POST">
                 <div class="form-group">
                     <label for="cantidad">Cantidad</label>
-                    <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" max="<?php echo $producto['stock']; ?>" value="1" required>
+                    <input type="number" name="cantidad" id="cantidad" class="form-control" min="1" max="<?php echo $producto['stock']; ?>" value="1" >
                 </div>
 
                 <div class="form-group">
                     <label for="relleno">Relleno</label>
-                    <select name="relleno" id="relleno" class="form-control">
+                    <select name="relleno" id="relleno" class="form-control" >
                         <option value="Chocolate">Chocolate</option>
                         <option value="Crema">Crema</option>
                         <option value="Caramelo">Caramelo</option>
@@ -273,7 +273,7 @@ $conexion->close(); // Cerrar la conexión a la base de datos
 
                 <div class="form-group">
                     <label for="cobertura">Cobertura</label>
-                    <select name="cobertura" id="cobertura" class="form-control">
+                    <select name="cobertura" id="cobertura" class="form-control" >
                         <option value="Chocolate">Chocolate</option>
                         <option value="Manteca">Manteca</option>
                         <option value="Glaseado">Glaseado</option>
@@ -284,7 +284,7 @@ $conexion->close(); // Cerrar la conexión a la base de datos
               
                 <div class="form-group">
                     <label for="masa">Masa</label>
-                    <select name="masa" id="masa" class="form-control">
+                    <select name="masa" id="masa" class="form-control" >
                         <option value="Bizcocho">Bizcocho</option>
                         <option value="Manteca">Manteca</option>
                         <option value="Almendra">Almendra</option>
@@ -297,24 +297,14 @@ $conexion->close(); // Cerrar la conexión a la base de datos
            
                 <div class="form-group">
                     <label for="tipo_pastel">Tipo de pastel</label>
-                    <select name="tipo_pastel" id="tipo_pastel" class="form-control">
+                    <select name="tipo_pastel" id="tipo_pastel" class="form-control" >
                         <option value="Tradicional">Tradicional</option>
                         <option value="Vegano">Vegano</option>
                         <option value="Sin Gluten">Sin Gluten</option>
                         <option value="Bajo en Azúcar">Bajo en Azúcar</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="mensaje_predefinido">Mensaje predefinido</label>
-                    <select name="mensaje_predefinido" id="mensaje_predefinido" class="form-control">
-                        <option value="Felicidades">Felicidades</option>
-                        <option value="Feliz Cumpleaños">Feliz Cumpleaños</option>
-                        <option value="Te Amo">Te Amo</option>
-                        <option value="Gracias">Gracias</option>
-                        <option value="Para ti con amor">Para ti con amor</option>
-                        <option value="Feliz Aniversario">Feliz Aniversario</option>
-                    </select>
-                </div>
+            
                 <div class="form-group">
                     <label for="mensaje">Mensaje en la torta</label>
                     <input type="text" name="mensaje" id="mensaje" class="form-control" placeholder="Escribe tu mensaje" >

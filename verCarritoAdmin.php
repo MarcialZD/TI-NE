@@ -103,11 +103,10 @@
 $resultCarrito = $conexion->query($sqlCarrito);
 
 // Consulta SQL para obtener las ventas y sus detalles, incluyendo el mensaje
-$sqlVentas = "SELECT v.id AS venta_id, v.fecha_hora, v.monto_total, 
-               va.mensaje, a.nombre AS articulo_nombre, a.precio AS articulo_precio, va.cantidad, (va.cantidad * a.precio) AS subtotal
+$sqlVentas = "SELECT v.id AS venta_id, v.fecha_hora, v.monto_total, v.transaccion_id
+              
         FROM ventas v
-        JOIN venta_articulo va ON v.id = va.venta_id
-        JOIN articulos a ON va.articulo_id = a.id
+      
         WHERE v.usuario_id = $usuario_id
         ORDER BY v.fecha_hora DESC"; // Ordenar por fecha
 $resultVentas = $conexion->query($sqlVentas);
@@ -153,11 +152,10 @@ echo '<tr><td colspan="5">No se encontraron resultados en el carrito.</td></tr>'
 echo '</tbody></table>';
 echo '</div>';
 
-        $sqlVentas = "SELECT v.id AS venta_id, v.fecha_hora, v.monto_total, v.direccion,
-                             va.mensaje, a.nombre AS articulo_nombre, a.precio AS articulo_precio, va.cantidad, (va.cantidad * a.precio) AS subtotal
+        $sqlVentas = "SELECT v.id AS venta_id, v.fecha_hora, v.monto_total, v.direccion,v.transaccion_id
+                            
                       FROM ventas v
-                      JOIN venta_articulo va ON v.id = va.venta_id
-                      JOIN articulos a ON va.articulo_id = a.id
+                     
                       WHERE v.usuario_id = $usuario_id
                       ORDER BY v.fecha_hora DESC";
         $resultVentas = $conexion->query($sqlVentas);
@@ -170,14 +168,12 @@ echo '</div>';
                 <thead>
                     <tr>
                         <th>ID de Venta</th>
+                        <th>Transaccion ID</th>
                         <th>Fecha y Hora</th>
-                        <th>Nombre del Artículo</th>
-                        <th>Precio Unitario</th>
-                        <th>Cantidad</th>
-                        <th>Subtotal</th>
                         <th>Monto Total</th>
-                        <th>Mensaje</th>
                         <th>Dirección</th>
+                        <th>Estado</th>
+
                     </tr>
                 </thead>
                 <tbody>';
@@ -185,16 +181,16 @@ echo '</div>';
         if ($resultVentas->num_rows > 0) {
             while ($rowVentas = $resultVentas->fetch_assoc()) {
                 echo '<tr>
-                        <td>' . $rowVentas["venta_id"] . '</td>
-                        <td>' . $rowVentas["fecha_hora"] . '</td>
-                        <td>' . $rowVentas["articulo_nombre"] . '</td>
-                        <td>$' . number_format($rowVentas["articulo_precio"], 2) . '</td>
-                        <td>' . $rowVentas["cantidad"] . '</td>
-                        <td>$' . number_format($rowVentas["subtotal"], 2) . '</td>
-                        <td>$' . number_format($rowVentas["monto_total"], 2) . '</td>
-                        <td>' . ($rowVentas["mensaje"] ? $rowVentas["mensaje"] : 'Sin mensaje') . '</td>
-                        <td>' . $rowVentas["direccion"] . '</td>
-                      </tr>';
+                <td>' . $rowVentas["venta_id"] . '</td>
+                <td>' . $rowVentas["transaccion_id"] . '</td>
+                <td>' . $rowVentas["fecha_hora"] . '</td>
+                <td>$' . number_format($rowVentas["monto_total"], 2) . '</td>
+                <td>' . $rowVentas["direccion"] . '</td>
+                <td>
+                    <a href="detalle_venta.php?id=' . $rowVentas["venta_id"] . '">Ver Detalle</a>
+                </td>
+              </tr>';
+        
             }
         } else {
             echo '<tr><td colspan="9">No se encontraron ventas para este usuario.</td></tr>';

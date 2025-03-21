@@ -5,6 +5,9 @@ if (!isset($_SESSION["username"])) {
     header("location: login.php");
     exit();
 }
+if($_SESSION["es_admin"] == 1){
+    echo("<script>window.location.href ='admin_interface.php';</script>");
+}
 
 require 'db_connect.php';
 
@@ -253,7 +256,7 @@ $ventas_resultado = $stmt->get_result();
                                         <td><?php echo number_format($item['cantidad'] * $item['precio_final'], 2); ?></td>
                                         <td><?php echo htmlspecialchars($item['mensaje']); ?></td>
                                         <td>
-                                            <button class="btn btn-danger eliminar-articulo" data-id="<?php echo $item['id']; ?>">Eliminar</button>
+                                            <button class=" eliminar-articulo" data-id="<?php echo $item['id']; ?>">Eliminar</button>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>
@@ -296,7 +299,7 @@ $ventas_resultado = $stmt->get_result();
                                     <?php endforeach; ?>
                                 </select>
                             </div><br><br>
-                            <a href="productos.php" class="btn btn-success">Añadir más productos</a>
+                            <a href="productos.php" >Añadir más productos</a>
                         </form>
                         <form id="finalizar-compra-form" action="carrito.php" method="post">
                             <button type="submit" name="finalizar_compra" class="btn btn-danger">Finalizar Compra</button>
@@ -332,6 +335,10 @@ $ventas_resultado = $stmt->get_result();
                                 <td><?php echo htmlspecialchars($venta['fecha_hora']); ?></td>
                                 <td><?php echo htmlspecialchars($venta['direccion']); ?></td>
                                 <td><?php echo htmlspecialchars($venta['estado']); ?></td>
+                                <td>
+    <a href="detalle_venta.php?id=<?php echo $venta['id_venta']; ?>" >Ver Detalle</a>
+</td>
+
                             </tr>
                         <?php endwhile; ?>
                     </tbody>

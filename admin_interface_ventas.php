@@ -8,10 +8,9 @@ if (!isset($_SESSION["username"]) || !isset($_SESSION["es_admin"]) || $_SESSION[
 
 require 'db_connect.php';
 
-$sql = "SELECT v.id, v.monto_total, v.direccion, v.estado, vp.mensaje, p.nombre AS producto, vp.cantidad, v.fecha_hora
+$sql = "SELECT v.id, v.monto_total, v.direccion, v.estado,  v.fecha_hora,v.transaccion_id
         FROM ventas v
-        JOIN venta_articulo vp ON v.id = vp.venta_id
-        JOIN articulos p ON vp.articulo_id = p.id
+       
         ORDER BY v.fecha_hora DESC";
 
 $total_sql = "SELECT SUM(monto_total) AS total_monto FROM ventas"; 
@@ -140,7 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buscar_venta'])) {
         <div class="row mb-3">
             <div class="col">
                 <label for="venta_id" class="form-label">ID de la Venta</label>
-                <input type="number" name="venta_id" id="venta_id" class="form-control" required>
+                <input type="number" name="venta_id" id="venta_id" class="form-control" required readonly>
             </div>
             <div class="col">
                 <label for="estado" class="form-label">Estado</label>
@@ -159,15 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buscar_venta'])) {
         <strong>Monto Total de Ventas:</strong> $<?php echo number_format($total_monto, 2); ?>
     </div>
 
-    <form action="" method="POST" class="mb-4">
-        <div class="row mb-3">
-            <div class="col">
-                <label for="venta_id_buscar" class="form-label">ID de la Venta para buscar usuario</label>
-                <input type="number" name="venta_id_buscar" id="venta_id_buscar" class="form-control" required>
-            </div>
-        </div>
-        <button type="submit" name="buscar_venta" class="btn btn-secondary">Buscar Datos del Usuario</button>
-    </form>
+  
 
     <?php
     if (isset($user_data)) {
@@ -203,13 +194,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buscar_venta'])) {
         <thead>
             <tr>
                 <th>ID Venta</th>
+                <th>Transaccion ID</th>
                 <th>Monto Total($)</th>
                 <th>Dirección</th>
                 <th>Estado</th>
-                <th>Mensaje</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
                 <th>Fecha y Hora</th>
+                <th>Ver Detalle</th>
+                <th>Seleccionar</th>
             </tr>
         </thead>
         <tbody>
@@ -218,14 +209,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buscar_venta'])) {
                 while($row = $result->fetch_assoc()) {
                     echo "<tr>";
                     echo "<td>" . $row['id'] . "</td>";
+
+                    echo "<td>" . $row['transaccion_id'] . "</td>";
+
                     echo "<td>" . $row['monto_total'] . "</td>";
                     echo "<td>" . $row['direccion'] . "</td>";
                     echo "<td>" . $row['estado'] . "</td>";
-                    echo "<td>" . $row['mensaje'] . "</td>";
-                    echo "<td>" . $row['producto'] . "</td>";
-                    echo "<td>" . $row['cantidad'] . "</td>";
                     echo "<td>" . $row['fecha_hora'] . "</td>";
-                    echo "</tr>";
+                    echo "<td><a href='detalle_venta.php?id=" . $row['id'] . "'>Ver Detalle</a></td>";
+                    echo "<td><button class='btn btn-primary btn-sm' onclick='seleccionarVenta(" . $row['id'] . ")'>Seleccionar</button></td>";
+
+
+                        echo "</tr>";
                 }
             } else {
                 echo "<tr><td colspan='8'>No se encontraron ventas.</td></tr>";
@@ -233,7 +228,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['buscar_venta'])) {
             ?>
         </tbody>
     </table>
+    <script>
+function seleccionarVenta(id) {
+    document.getElementById("venta_id").value = id;
+}
+</script>
 </div>
+<canvas id="grafico"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+fetch("datos.php")  
+    .then(response => response.json())
+    .then(data => {
+        const ctx = document.getElementById("grafico").getContext("2d");
+        new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: data.productos,
+                datasets: [{
+                    label: "Cantidad Vendida",
+                    data: data.cantidades,
+                    backgroundColor: "rgba(54, 162, 235, 0.5)",
+                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderWidth: 1
+                }]
+            }
+        });
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
